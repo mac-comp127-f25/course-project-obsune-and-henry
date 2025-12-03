@@ -51,6 +51,7 @@ public class Game {
         Block block = new Block(threeone.getX(),threeone.getY());
         canvas.add(block.getBlock());
         canvas.draw();
+        if ()
     }
 
     public static void main(String args[]) {
