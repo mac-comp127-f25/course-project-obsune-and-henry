@@ -6,7 +6,7 @@ public class Block {
     private Image image;
 
 
-    public Block(double x, double y, double val){
+    public Block(double x, double y, int val){
 
         //Point size = new Point(140, 140);
         // this.block = new Rectangle(location, size);

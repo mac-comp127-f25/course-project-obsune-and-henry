@@ -59,8 +59,8 @@ public class Game {
         canvas.add(block.getBlock());
         Point newBlockpoint = points.get(new Random().nextInt(points.size()));
        if (canvas.getElementAt(newBlockpoint) == null) {
-            Block newBlock = new Block(newBlockpointblockpoint.getX(), newBlockpoint.getY(), 2);
-            canvas.add(block.getBlock());
+            Block newBlock = new Block(newBlockpoint.getX(), newBlockpoint.getY(), 2);
+            canvas.add(newBlock.getBlock());
         }
         canvas.draw();
 
