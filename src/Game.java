@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.random.*;
 import edu.macalester.graphics.*;
 
 public class Game {
@@ -7,6 +9,8 @@ public class Game {
 
     //---list of each board point for a 140x140 block---
     List<Point> points = new ArrayList<>();
+
+    //boolean gameInProgress = true;
 
     public Game() {
 
@@ -47,11 +51,25 @@ public class Game {
         CanvasWindow canvas = new CanvasWindow("2048 (MSCS Department Edition)", 700,700);
         GameBoard board = new GameBoard();
         canvas.add(board.createGrid());
-
-        Block block = new Block(threeone.getX(),threeone.getY());
+        canvas.draw();
+        
+        Point blockpoint = points.get(new Random().nextInt(points.size()));
+        Block block = new Block(blockpoint.getX(), blockpoint.getY(), 2);
         canvas.add(block.getBlock());
         canvas.draw();
+        // RandomGenerator rand = new ran
+        
+        // sysoutnew Random().nextInt(points.size())
+
     }
+
+
+
+    public void moveRight(){
+        
+    }
+
+    
 
     public static void main(String args[]) {
         new Game();
