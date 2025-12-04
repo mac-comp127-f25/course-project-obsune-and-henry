@@ -61,6 +61,7 @@ public class Game {
        if (canvas.getElementAt(newBlockpoint) == null) {
             Block newBlock = new Block(newBlockpoint.getX(), newBlockpoint.getY(), 2);
             canvas.add(newBlock.getBlock());
+            canvas.draw();
         }
         canvas.draw();
 
