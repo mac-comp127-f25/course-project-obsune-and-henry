@@ -3,13 +3,19 @@ import java.util.List;
 import java.util.Random;
 import java.util.random.*;
 import edu.macalester.graphics.*;
+import edu.macalester.graphics.events.KeyboardEventHandler;
 
 public class Game {
 
 
     //---list of each board point for a 140x140 block---
-    List<Point> points = new ArrayList<>();
-    CanvasWindow canvas;
+    private List<Point> points = new ArrayList<>();
+    private CanvasWindow canvas;
+    private KeyboardEventHandler handler;
+
+
+    
+
 
     //boolean gameInProgress = true;
 
@@ -64,7 +70,13 @@ public class Game {
             canvas.draw();
         }
         canvas.draw();
-
+        // canvas.onKeyDown(event ->
+        //     brick.moveBlock(getKey())
+        // );
+        block.moveBlock("UP_ARROW");
+        for (Point point:points) {
+            System.out.println(canvas.getElementAt(point.getX() + 10, point.getY() + 10));
+        }
     }
 
 

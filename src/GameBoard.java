@@ -34,10 +34,23 @@ public class GameBoard {
         line5.setStrokeWidth(10);
         grid.add(line5);
 
-        Rectangle border = new Rectangle(50, 50, 600, 600);
-        border.setStrokeColor(Color.BLACK);
-        border.setStrokeWidth(10);
-        grid.add(border);
+        //----Border-----
+        Line border1 = new Line(50, 50, 650, 50);
+        grid.add(border1);
+        border1.setStrokeWidth(10);
+        border1.setStrokeColor(Color.BLACK);
+        Line border2 = new Line(650, 50, 650, 650);
+        grid.add(border2);
+        border2.setStrokeWidth(10);
+        border2.setStrokeColor(Color.BLACK);
+        Line border3 = new Line(50, 650, 650, 650);
+        grid.add(border3);
+        border3.setStrokeWidth(10);
+        border3.setStrokeColor(Color.BLACK);
+        Line border4 = new Line(50, 50, 50, 650);
+        grid.add(border4);
+        border4.setStrokeWidth(10);
+        border4.setStrokeColor(Color.BLACK);
         return grid;
     }
 }
