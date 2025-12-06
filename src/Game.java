@@ -70,10 +70,9 @@ public class Game {
             canvas.draw();
         }
         canvas.draw();
-        // canvas.onKeyDown(event ->
-        //     brick.moveBlock(getKey())
-        // );
-        block.moveBlock("UP_ARROW");
+        canvas.onKeyDown(event ->
+            block.moveBlock(event.getKey())
+        );
         for (Point point:points) {
             System.out.println(canvas.getElementAt(point.getX() + 10, point.getY() + 10));
         }
