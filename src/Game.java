@@ -7,17 +7,12 @@ import edu.macalester.graphics.events.KeyboardEventHandler;
 
 public class Game {
 
-
     //---list of each board point for a 140x140 block---
     private List<Point> points = new ArrayList<>();
+
     private CanvasWindow canvas;
     private KeyboardEventHandler handler;
-
-
-    
-
-
-    //boolean gameInProgress = true;
+    private List<String> blocksOnScreen = new ArrayList<>();
 
     public Game() {
 
@@ -59,10 +54,14 @@ public class Game {
         GameBoard board = new GameBoard();
         canvas.add(board.createGrid());
         canvas.draw();
+        this.blocksOnScreen = blocksOnScreen;
         
+        //add block to random pos
         Point blockpoint = points.get(new Random().nextInt(points.size()));
         Block block = new Block(blockpoint.getX(), blockpoint.getY(), 2);
         canvas.add(block.getBlock());
+
+        //add new block to random pos (I think this wont work if on same space)
         Point newBlockpoint = points.get(new Random().nextInt(points.size()));
        if (canvas.getElementAt(newBlockpoint) == null) {
             Block newBlock = new Block(newBlockpoint.getX(), newBlockpoint.getY(), 2);
@@ -70,21 +69,37 @@ public class Game {
             canvas.draw();
         }
         canvas.draw();
+
+        //call to moveblock from keydown
         canvas.onKeyDown(event ->
             block.moveBlock(event.getKey())
         );
-        for (Point point:points) {
-            System.out.println(canvas.getElementAt(point.getX() + 10, point.getY() + 10));
-        }
     }
-
-
-
-    public void moveRight(){
-        
-    }
-
     
+    public void updateElementList(Block block){
+
+        Point pos = block.getPosition();
+        int val = block.getVal();
+
+    }
+    
+    // public List<String> getBlocks(){
+        
+    //     for (Point point:points) {
+    //         GraphicsObject object = canvas.getElementAt(point.getX() + 10, point.getY() + 10);
+    //         System.out.println(object.toString());
+        
+    //     }
+    //     //     if(point == null){
+    //     //         System.out.println("null");
+    //     //     }
+    //     //     else{
+    //     //         blocksOnScreen.add(point.toString());
+    //     //     }
+    //     // }
+    
+    //     return blocksOnScreen;
+    // }
 
     public static void main(String args[]) {
         new Game();
