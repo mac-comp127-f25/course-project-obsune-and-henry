@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.random.*;
 import edu.macalester.graphics.*;
+import edu.macalester.graphics.events.Key;
 import edu.macalester.graphics.events.KeyboardEventHandler;
 
 public class Game {
@@ -12,7 +12,11 @@ public class Game {
 
     private CanvasWindow canvas;
     private KeyboardEventHandler handler;
-    private List<String> blocksOnScreen = new ArrayList<>();
+    private List<Block> blocksOnScreen = new ArrayList<>();
+    private double max = 505;
+    private double min = 55;
+
+    Block block;
 
     public Game() {
 
@@ -50,37 +54,110 @@ public class Game {
     points.add(threethree);
         
 
-        CanvasWindow canvas = new CanvasWindow("2048 (MSCS Department Edition)", 700,700);
+        this.canvas = new CanvasWindow("2048 (MSCS Department Edition)", 700,700);
         GameBoard board = new GameBoard();
         canvas.add(board.createGrid());
         canvas.draw();
+
+        //blocks list
         this.blocksOnScreen = blocksOnScreen;
+
+
         
-        //add block to random pos
-        Point blockpoint = points.get(new Random().nextInt(points.size()));
-        Block block = new Block(blockpoint.getX(), blockpoint.getY(), 2);
-        canvas.add(block.getBlock());
+    //     //add block to random pos
+    //     Point blockpoint = points.get(new Random().nextInt(points.size()));
+    //     Block block = new Block(blockpoint.getX(), blockpoint.getY(), 2);
+    //     canvas.add(block.getBlock());
 
-        //add new block to random pos (I think this wont work if on same space)
-        Point newBlockpoint = points.get(new Random().nextInt(points.size()));
-       if (canvas.getElementAt(newBlockpoint) == null) {
-            Block newBlock = new Block(newBlockpoint.getX(), newBlockpoint.getY(), 2);
-            canvas.add(newBlock.getBlock());
-            canvas.draw();
-        }
-        canvas.draw();
+    //     //add new block to random pos (I think this wont work if on same space)
+    //     Point newBlockpoint = points.get(new Random().nextInt(points.size()));
+    //    if (canvas.getElementAt(newBlockpoint) == null) {
+    //         Block newBlock = new Block(newBlockpoint.getX(), newBlockpoint.getY(), 2);
+    //         canvas.add(newBlock.getBlock());
+    //         canvas.draw();
+    //     }
 
-        //call to moveblock from keydown
+//-------
+
+    //where stuff happens
+
+
+        addRandomBlock();
+
+        //call to move block from keydown (when list ready, iterate over each for moveblock)
         canvas.onKeyDown(event ->
-            block.moveBlock(event.getKey())
+            moveBlock(block, event.getKey())
         );
+        
     }
     
-    public void updateElementList(Block block){
 
+//------
+
+    public void updateElementList(List<Block> list){
+        for (Block block:list){
+        
         Point pos = block.getPosition();
-        int val = block.getVal();
+        double val = block.getVal();
+        
+        }
 
+    }
+
+    //add random block
+    public void addRandomBlock(){
+        Point blockpoint;
+        double val;
+        blockpoint = points.get(new Random().nextInt(points.size()));
+        while (canvas.getElementAt(blockpoint.getX() + 10, blockpoint.getY() + 10) != null){
+            blockpoint = points.get(new Random().nextInt(points.size()));
+        }
+        double randval = new Random().nextDouble();
+        if (randval <= 0.7){
+            val = 2;
+        }
+        else {
+            val = 4;
+        }
+        System.err.println(blockpoint.getX());
+        System.out.println(blockpoint.getY());
+        Block block = new Block(blockpoint.getX(), blockpoint.getY(), val);
+        canvas.add(block.getBlock());
+        canvas.draw();
+
+
+        
+
+
+        // for(Point point:points){
+        //     if(canvas.getElementAt(point.getX() + 10, point.getY() + 10) == null){
+
+
+        // }
+
+        // if (canvas.getElementAt(newBlockpoint) == null) {
+        //     Block newBlock = new Block(newBlockpoint.getX(), newBlockpoint.getY(), 2);
+        //     canvas.add(newBlock.getBlock());
+        //     canvas.draw();
+        // }
+    }
+
+    //block movement
+    public void moveBlock(Block block, Key key) {
+        addRandomBlock();
+        System.out.println("It's getting called");
+        Key up = Key.UP_ARROW;
+        Key down = Key.DOWN_ARROW;
+        Key left = Key.LEFT_ARROW;
+        Key right = Key.RIGHT_ARROW;
+        if(block.getPosition().getX() >= 55 && block.getPosition().getX() <= 505 && block.getPosition().getY() >= 55 && block.getPosition().getY() <= 505) {
+            if (key == up) {
+                block.setPosition(block.getPosition().getX(), min);
+                System.out.println("Yes");
+            }
+            
+            canvas.draw();
+        }
     }
     
     // public List<String> getBlocks(){
