@@ -17,7 +17,7 @@ public class Game {
     private double min = 55;
     private int count = 0;
 
-    // Block block;
+    Block block;
 
     public Game() {
 
@@ -155,6 +155,7 @@ public class Game {
             if(block.getPosition().getX() >= 55 && block.getPosition().getX() <= 505 && block.getPosition().getY() >= 55 && block.getPosition().getY() <= 505) {
                 if (key == up) {
                     block.setPosition(block.getPosition().getX(), min);
+                    block.interactWith(block);
                 }
                 if (key == down) {
                     block.setPosition(block.getPosition().getX(), max);
@@ -169,7 +170,10 @@ public class Game {
         }
         addRandomBlock();
     }
+
     
+    
+
     // public List<String> getBlocks(){
         
     //     for (Point point:points) {
