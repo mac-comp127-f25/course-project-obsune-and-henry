@@ -15,8 +15,9 @@ public class Game {
     private List<Block> blocksOnScreen = new ArrayList<>();
     private double max = 505;
     private double min = 55;
+    private int count = 0;
 
-    Block block;
+    // Block block;
 
     public Game() {
 
@@ -57,7 +58,7 @@ public class Game {
         this.canvas = new CanvasWindow("2048 (MSCS Department Edition)", 700,700);
         GameBoard board = new GameBoard();
         canvas.add(board.createGrid());
-        canvas.draw();
+        
 
         //blocks list
         this.blocksOnScreen = blocksOnScreen;
@@ -86,9 +87,9 @@ public class Game {
 
         //call to move block from keydown (when list ready, iterate over each for moveblock)
         canvas.onKeyDown(event ->
-            moveBlock(block, event.getKey())
+            moveBlock(event.getKey())
         );
-        
+        // canvas.draw();
     }
     
 
@@ -108,6 +109,7 @@ public class Game {
     public void addRandomBlock(){
         Point blockpoint;
         double val;
+        
         blockpoint = points.get(new Random().nextInt(points.size()));
         while (canvas.getElementAt(blockpoint.getX() + 10, blockpoint.getY() + 10) != null){
             blockpoint = points.get(new Random().nextInt(points.size()));
@@ -119,11 +121,11 @@ public class Game {
         else {
             val = 4;
         }
-        System.err.println(blockpoint.getX());
-        System.out.println(blockpoint.getY());
         Block block = new Block(blockpoint.getX(), blockpoint.getY(), val);
         canvas.add(block.getBlock());
-        canvas.draw();
+        blocksOnScreen.add(block);
+        // canvas.draw();
+
 
 
         
@@ -143,21 +145,29 @@ public class Game {
     }
 
     //block movement
-    public void moveBlock(Block block, Key key) {
-        addRandomBlock();
-        System.out.println("It's getting called");
+    public void moveBlock(Key key) {
         Key up = Key.UP_ARROW;
         Key down = Key.DOWN_ARROW;
         Key left = Key.LEFT_ARROW;
         Key right = Key.RIGHT_ARROW;
-        if(block.getPosition().getX() >= 55 && block.getPosition().getX() <= 505 && block.getPosition().getY() >= 55 && block.getPosition().getY() <= 505) {
-            if (key == up) {
-                block.setPosition(block.getPosition().getX(), min);
-                System.out.println("Yes");
+        System.out.println(blocksOnScreen);
+        for(Block block: blocksOnScreen){
+            if(block.getPosition().getX() >= 55 && block.getPosition().getX() <= 505 && block.getPosition().getY() >= 55 && block.getPosition().getY() <= 505) {
+                if (key == up) {
+                    block.setPosition(block.getPosition().getX(), min);
+                }
+                if (key == down) {
+                    block.setPosition(block.getPosition().getX(), max);
+                }
+                if (key == left) {
+                    block.setPosition(min, block.getPosition().getY());
+                }
+                if (key == right) {
+                    block.setPosition(max, block.getPosition().getY());
+                }
             }
-            
-            canvas.draw();
         }
+        addRandomBlock();
     }
     
     // public List<String> getBlocks(){
