@@ -85,6 +85,7 @@ public class Game {
 
 
         addRandomBlock();
+        addRandomBlock();
 
         //call to move block from keydown (when list ready, iterate over each for moveblock)
         canvas.onKeyDown(event ->
@@ -239,7 +240,7 @@ public class Game {
     public void moveLeft(Block block) {
         if (block != null && blocksOnScreen[block.getIndex()].getIndex() != 0 && blocksOnScreen[block.getIndex()].getIndex() != 4 && blocksOnScreen[block.getIndex()].getIndex() != 8 && blocksOnScreen[block.getIndex()].getIndex() != 12) {
             while (blocksOnScreen[block.getIndex()-1] == null) {
-                if (blocksOnScreen[block.getIndex()].getIndex() == 0 && blocksOnScreen[block.getIndex()].getIndex() == 4 && blocksOnScreen[block.getIndex()].getIndex() == 8 && blocksOnScreen[block.getIndex()].getIndex() == 12) {
+                if (blocksOnScreen[block.getIndex()].getIndex() == 0 || blocksOnScreen[block.getIndex()].getIndex() == 4 || blocksOnScreen[block.getIndex()].getIndex() == 8 || blocksOnScreen[block.getIndex()].getIndex() == 12) {
                     System.out.println("hello");
                     block.setPosition(block.getIndex());
                     break;
@@ -262,7 +263,7 @@ public class Game {
     public void moveRight(Block block) {
         if (block != null && blocksOnScreen[block.getIndex()].getIndex() != 3 && blocksOnScreen[block.getIndex()].getIndex() != 7 && blocksOnScreen[block.getIndex()].getIndex() != 11 && blocksOnScreen[block.getIndex()].getIndex() != 15) {
             while (blocksOnScreen[block.getIndex()+1] == null) {
-                if (blocksOnScreen[block.getIndex()].getIndex() == 3 && blocksOnScreen[block.getIndex()].getIndex() == 7 && blocksOnScreen[block.getIndex()].getIndex() == 11 && blocksOnScreen[block.getIndex()].getIndex() == 15) {
+                if (blocksOnScreen[block.getIndex()].getIndex() == 3 || blocksOnScreen[block.getIndex()].getIndex() == 7 || blocksOnScreen[block.getIndex()].getIndex() == 11 || blocksOnScreen[block.getIndex()].getIndex() == 15) {
                     System.out.println("hello");
                     block.setPosition(block.getIndex());
                     break;
