@@ -1,18 +1,17 @@
 import edu.macalester.graphics.Line;
-import edu.macalester.graphics.Rectangle;
 import edu.macalester.graphics.GraphicsGroup;
 import java.awt.Color;
-
 public class GameBoard {
-
-    public Rectangle border;
-
     public GameBoard() {
     }
-
+    /**
+     * Creates a game board with 4 internal, vertical lines, 4 internal 
+     * horizontal lines, and 4 lines to make the border.
+     * In all, there are 16 total boxes 
+     * @return
+     */
     public GraphicsGroup createGrid() {
         GraphicsGroup grid = new GraphicsGroup();
-
         //-----vertical------
         Line line = new Line(200, 50, 200, 650);
         line.setStrokeWidth(10);
@@ -33,7 +32,6 @@ public class GameBoard {
         Line line5 = new Line(50, 500, 650, 500);
         line5.setStrokeWidth(10);
         grid.add(line5);
-
         //----Border-----
         Line border1 = new Line(50, 50, 650, 50);
         grid.add(border1);

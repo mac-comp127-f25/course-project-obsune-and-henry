@@ -1,10 +1,8 @@
-
 import java.util.Map;
 import edu.macalester.graphics.*;
 public class Block {
-    //private Rectangle block;
     private Image image;
-    Map<Integer, String> imageCollection = Map.ofEntries(
+    Map<Integer, String> imageCollection = Map.ofEntries( 
         Map.entry(2, "AbbyMarsh.jpeg"),
         Map.entry(4, "AliciaJohnson.jpeg"),
         Map.entry(8, "Bretjackson.jpeg"),
@@ -19,36 +17,70 @@ public class Block {
     private int thisval;
     private int index;
     public Game game;
-
-    public Block(int index, int val, Game game){
+    /**
+     * Creates a new Block object
+     * @param index     The index of the points list from the Game class that will determine the placement the block goes in
+     * @param val       The value of the block that coincides with that value's image
+     * @param game      A call to the Game class that will retrieve the data from the points list
+     */
+    public Block(int index, int val, Game game) {
         this.index = index;
         this.game = game;
         this.thisval = val;
         for (int key:imageCollection.keySet()) {
-            if(key == thisval){
+            if(key == thisval) {
                 this.image = new Image(game.points.get(index).getX(), game.points.get(index).getY(), imageCollection.get(key));
             }
         }
     }
-    public Point getPosition(){
+    /**
+     * Gets the position of the blocks position using the getX() and getY() method on the image
+     * @return a new point of the image's position
+     */
+    public Point getPosition() {
         return new Point(image.getX(), image.getY());
     }
-    public void setPosition(int index){
+    /**
+     * Sets the position of the blocks position using the index from the points list
+     * @param index 
+     */
+    public void setPosition(int index) {
         this.image.setPosition(game.points.get(index).getX(), game.points.get(index).getY());
     }
-    public int getVal(){
+    /**
+     * Returns the value that corresponds to that image
+     * @return
+     */
+    public int getVal() {
         return thisval;
     }
-    public void setVal(int thisval){
-        this.thisval = thisval;
-    }
-    public Image getBlock(){
+    /**
+     * Returns the image of the block
+     * @return
+     */
+    public Image getBlock() {
         return this.image;
     }
+    /**
+     * Creates a new block with its corresponding value and position it will have on the game board
+     * @param index 
+     * @param val
+     */
     public void setBlock(int index, Integer val) {
         this.image = new Image(game.points.get(index).getX(), game.points.get(index).getY(), imageCollection.get(val));
     }
+    /**
+     * Returns the index the block is positioned at
+     * @return
+     */
     public int getIndex() {
         return this.index;
+    }
+    /**
+     * Sets a new index for a block to position it somewhere else
+     * @param index
+     */
+    public void setIndex(int index) {
+        this.index = index;
     }
 }
