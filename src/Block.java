@@ -1,12 +1,21 @@
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Map;
 import edu.macalester.graphics.*;
-import edu.macalester.graphics.events.Key;
 public class Block {
     //private Rectangle block;
     private Image image;
-    private Map<Integer,String> imageCollection = Map.of(2,"AbbyMarsh.jpeg",4,"AliciaJohnson.jpeg",8,"Bretjackson.jpeg");
+    Map<Integer, String> imageCollection = Map.ofEntries(
+        Map.entry(2, "AbbyMarsh.jpeg"),
+        Map.entry(4, "AliciaJohnson.jpeg"),
+        Map.entry(8, "Bretjackson.jpeg"),
+        Map.entry(16, "DanDrake.jpeg"),
+        Map.entry(32, "GetiriaOnsongo.png"),
+        Map.entry(64, "LianDuan.png"),
+        Map.entry(128, "PaulCantrell.png"),
+        Map.entry(256, "Shilad.jpeg"),
+        Map.entry(512, "Suhas.jpeg"),
+        Map.entry(1024, "SusanFox.png"),
+        Map.entry(2048, "WilliamMitchell.jpeg"));    
     private int thisval;
     private int index;
     public Game game;

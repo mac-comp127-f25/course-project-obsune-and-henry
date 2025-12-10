@@ -122,7 +122,6 @@ public class Game {
         Block block = new Block(randIndex, val, this);
         canvas.add(block.getBlock());
         blocksOnScreen[randIndex] = block;
-        
         // canvas.draw();
 
 
@@ -158,7 +157,7 @@ public class Game {
                         moveUp(block);
                     }
                     if (key == down) {
-                        block.setPosition(block.getIndex() + 4);
+                        moveDown(block);
                     }
                     if (key == left) {
                         block.setPosition(block.getIndex() - 1);
@@ -173,13 +172,20 @@ public class Game {
         addRandomBlock();
     }
     public void moveUp(Block block) {
-            if (block != null) {
-                if (blocksOnScreen[block.getIndex()-4] == null) {
-                    block.setPosition(block.getIndex()-4);
+        if (block != null && blocksOnScreen[block.getIndex()].getIndex() > 3) {
+            while (blocksOnScreen[block.getIndex()-4] == null) {
+                if (blocksOnScreen[block.getIndex()].getIndex() < 4) {
+                    System.out.println("hello");
+                    block.setPosition(block.getIndex());
+                    break;
                 }
-            else{
+                block.setPosition(block.getIndex()-4);
+                break;
+            }
+            if (blocksOnScreen[block.getIndex()-4] != null) {
                 interactWith(block, blocksOnScreen[block.getIndex()-4]);
             }
+        }
             
         //     if(canvas.getElementAt(points.get(i)) != null) {
         //         if(canvas.getElementAt(points.get(i-4)) == null) {
@@ -206,30 +212,76 @@ public class Game {
         //             interactWith(thisBlock, otherBlock);
         //         }
         //     }
-        }
+        
     }
 
-    public void moveDown() {
-        for(int i = 11; i >= 0; i--) {
-
-        }
-    }
-
-    public void moveLeft() {
-        for(int i = 1; i < 16; i++) {
-            if(i != 4 && i != 8 && i != 12) {
-
+    public void moveDown(Block block) {
+        if (block != null && blocksOnScreen[block.getIndex()].getIndex() < 12) {
+            while (blocksOnScreen[block.getIndex()+4] == null) {
+                if (blocksOnScreen[block.getIndex()].getIndex() > 11) {
+                    System.out.println("hello");
+                    block.setPosition(block.getIndex());
+                    break;
+                }
+                block.setPosition(block.getIndex()+4);
+                break;
+            }
+            if (blocksOnScreen[block.getIndex()+4] != null) {
+                interactWith(block, blocksOnScreen[block.getIndex()+4]);
             }
         }
     }
+    //     for(int i = 11; i >= 0; i--) {
 
-    public void moveRight() {
-        for(int i = 14; i >= 0; i--) {
-            if(i != 3 && i != 7 && i != 11) {
+    //     }
+    // }
 
+    public void moveLeft(Block block) {
+        if (block != null && blocksOnScreen[block.getIndex()].getIndex() != 0 && blocksOnScreen[block.getIndex()].getIndex() != 4 && blocksOnScreen[block.getIndex()].getIndex() != 8 && blocksOnScreen[block.getIndex()].getIndex() != 12) {
+            while (blocksOnScreen[block.getIndex()-1] == null) {
+                if (blocksOnScreen[block.getIndex()].getIndex() == 0 && blocksOnScreen[block.getIndex()].getIndex() == 4 && blocksOnScreen[block.getIndex()].getIndex() == 8 && blocksOnScreen[block.getIndex()].getIndex() == 12) {
+                    System.out.println("hello");
+                    block.setPosition(block.getIndex());
+                    break;
+                }
+                block.setPosition(block.getIndex()-1);
+                break;
+            }
+            if (blocksOnScreen[block.getIndex()-1] != null) {
+                interactWith(block, blocksOnScreen[block.getIndex()-1]);
             }
         }
     }
+    //     for(int i = 1; i < 16; i++) {
+    //         if(i != 4 && i != 8 && i != 12) {
+
+    //         }
+    //     }
+    // }
+
+    public void moveRight(Block block) {
+        if (block != null && blocksOnScreen[block.getIndex()].getIndex() != 3 && blocksOnScreen[block.getIndex()].getIndex() != 7 && blocksOnScreen[block.getIndex()].getIndex() != 11 && blocksOnScreen[block.getIndex()].getIndex() != 15) {
+            while (blocksOnScreen[block.getIndex()+1] == null) {
+                if (blocksOnScreen[block.getIndex()].getIndex() == 3 && blocksOnScreen[block.getIndex()].getIndex() == 7 && blocksOnScreen[block.getIndex()].getIndex() == 11 && blocksOnScreen[block.getIndex()].getIndex() == 15) {
+                    System.out.println("hello");
+                    block.setPosition(block.getIndex());
+                    break;
+                }
+                block.setPosition(block.getIndex()+1);
+                break;
+            }
+            if (blocksOnScreen[block.getIndex()+1] != null) {
+                interactWith(block, blocksOnScreen[block.getIndex()+1]);
+            }
+        }
+    }
+    
+    //     for(int i = 14; i >= 0; i--) {
+    //         if(i != 3 && i != 7 && i != 11) {
+
+    //         }
+    //     }
+    // }
 
     public void interactWith(Block block, Block otherBlock) {
         if(block.getVal() != otherBlock.getVal()) {
@@ -242,6 +294,8 @@ public class Game {
             blocksOnScreen[block.getIndex()] = null;
             canvas.remove(block.getBlock());
             canvas.remove(otherBlock.getBlock());
+            canvas.add(newBlock.getBlock());
+            canvas.draw();
         }
         //     for(int i = 0;i < 4;i++) {
         //         if (canvas.getElementAt(points.get(i)) != null) {
