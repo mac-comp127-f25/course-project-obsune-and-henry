@@ -255,25 +255,32 @@ public class Game {
     //     }
     // }
     public void moveRight(Block block) {
-        Block otherBlock = blocksOnScreen[block.getIndex()+1];
-        if (block != null && blocksOnScreen[block.getIndex()].getIndex() != 3 && blocksOnScreen[block.getIndex()].getIndex() != 7 && blocksOnScreen[block.getIndex()].getIndex() != 11 && blocksOnScreen[block.getIndex()].getIndex() != 15) {
-            while (otherBlock == null) {
+        if (block != null && blocksOnScreen[block.getIndex()].getIndex() != 3 && blocksOnScreen[block.getIndex()].getIndex() != 3 && blocksOnScreen[block.getIndex()].getIndex() != 11 && blocksOnScreen[block.getIndex()].getIndex() != 15) {
+            while (blocksOnScreen[block.getIndex()+1] == null) {
                 if (blocksOnScreen[block.getIndex()].getIndex() == 3 || blocksOnScreen[block.getIndex()].getIndex() == 7 || blocksOnScreen[block.getIndex()].getIndex() == 11 || blocksOnScreen[block.getIndex()].getIndex() == 15) {
                     System.out.println("hello");
                     block.setPosition(block.getIndex());
+                    break;
                 }
                 block.setPosition(block.getIndex()+1);
+                break;
             }
-            if (otherBlock != null) {
-                if (block.getVal() != (otherBlock).getVal()) {
-                    // block.setPosition();
-                }
-                else{
-                    interactWith(block, otherBlock);
-                }
+            if (blocksOnScreen[block.getIndex()+1] != null) {
+                interactWith(block, blocksOnScreen[block.getIndex()+1]);
             }
         }
     }
+            // if (otherBlock != null) {
+            //     if (block.getVal() != (otherBlock).getVal()) {
+            //         if (blocksOnScreen[otherBlock.getIndex()].getIndex() == 3 || blocksOnScreen[otherBlock.getIndex()].getIndex() == 7 || blocksOnScreen[otherBlock.getIndex()].getIndex() == 11 || blocksOnScreen[otherBlock.getIndex()].getIndex() == 15) {
+            //             block.setPosition(count);
+            //         }
+            //     }
+            //     else{
+            //         interactWith(block, otherBlock);
+            //     }
+            // }
+
     //     for(int i = 14; i >= 0; i--) {
     //         if(i != 3 && i != 7 && i != 11) {
 
