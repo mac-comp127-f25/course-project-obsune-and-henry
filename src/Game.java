@@ -160,10 +160,10 @@ public class Game {
                         moveDown(block);
                     }
                     if (key == left) {
-                        block.setPosition(block.getIndex() - 1);
+                        moveLeft(block);
                     }
                     if (key == right) {
-                        block.setPosition(block.getIndex() + 1);
+                        moveRight(block);
                     }
                 }
             }
