@@ -8,16 +8,17 @@ import edu.macalester.graphics.events.KeyboardEventHandler;
 public class Game {
 
     //---list of each board point for a 140x140 block---
-    private List<Point> points = new ArrayList<>();
+    public List<Point> points = new ArrayList<>();
 
     private CanvasWindow canvas;
     private KeyboardEventHandler handler;
-    private List<Block> blocksOnScreen = new ArrayList<>();
+    private Block[] blocksOnScreen = new Block[16];
     private double max = 505;
     private double min = 55;
     private int count = 0;
-
-    Block block;
+    private Point blockpoint;
+    private Block block;
+    private int val;
 
     public Game() {
 
@@ -107,12 +108,9 @@ public class Game {
 
     //add random block
     public void addRandomBlock(){
-        Point blockpoint;
-        double val;
-        
-        blockpoint = points.get(new Random().nextInt(points.size()));
-        while (canvas.getElementAt(blockpoint.getX() + 10, blockpoint.getY() + 10) != null){
-            blockpoint = points.get(new Random().nextInt(points.size()));
+        int randIndex = new Random().nextInt(points.size());
+        while (blocksOnScreen[randIndex] != null){
+            randIndex = new Random().nextInt(points.size());
         }
         double randval = new Random().nextDouble();
         if (randval <= 0.7){
@@ -121,9 +119,10 @@ public class Game {
         else {
             val = 4;
         }
-        Block block = new Block(blockpoint.getX(), blockpoint.getY(), val);
+        Block block = new Block(randIndex, val, this);
         canvas.add(block.getBlock());
-        blocksOnScreen.add(block);
+        blocksOnScreen[randIndex] = block;
+        
         // canvas.draw();
 
 
@@ -151,26 +150,121 @@ public class Game {
         Key left = Key.LEFT_ARROW;
         Key right = Key.RIGHT_ARROW;
         System.out.println(blocksOnScreen);
-        for(Block block: blocksOnScreen){
-            if(block.getPosition().getX() >= 55 && block.getPosition().getX() <= 505 && block.getPosition().getY() >= 55 && block.getPosition().getY() <= 505) {
-                if (key == up) {
-                    block.setPosition(block.getPosition().getX(), min);
-                    block.interactWith(block);
-                }
-                if (key == down) {
-                    block.setPosition(block.getPosition().getX(), max);
-                }
-                if (key == left) {
-                    block.setPosition(min, block.getPosition().getY());
-                }
-                if (key == right) {
-                    block.setPosition(max, block.getPosition().getY());
+        for(int i = 0; i < 16; i++){
+            Block block = blocksOnScreen[i];
+            if(block != null) {
+                if(block.getPosition().getX() >= 55 && block.getPosition().getX() <= 505 && block.getPosition().getY() >= 55 && block.getPosition().getY() <= 505) {
+                    if(key == up) {
+                        moveUp(block);
+                    }
+                    if (key == down) {
+                        block.setPosition(block.getIndex() + 4);
+                    }
+                    if (key == left) {
+                        block.setPosition(block.getIndex() - 1);
+                    }
+                    if (key == right) {
+                        block.setPosition(block.getIndex() + 1);
+                    }
                 }
             }
         }
+        handleBlockInteraction();
         addRandomBlock();
     }
+    public void moveUp(Block block) {
+            if (block != null) {
+                if (blocksOnScreen[block.getIndex()-4] == null) {
+                    block.setPosition(block.getIndex()-4);
+                }
+            else{
+                interactWith(block, blocksOnScreen[block.getIndex()-4]);
+            }
+            
+        //     if(canvas.getElementAt(points.get(i)) != null) {
+        //         if(canvas.getElementAt(points.get(i-4)) == null) {
+        //             // FIND THE BLOCK -- WE KNOW IT'S THERE, WE KNOW ITS POSITION, NOW WE HAVE TO GO GET IT
+        //             // for(Block b : blocksOnScreen) {
+        //             //     if(b.getPosition().equals(points.get(i))) {
+        //             //         b.setPosition(points.get(i).getX(), points.get(i).getY() - 150);
+        //             //     }
+        //             // }
+        //         }
+        //         if(canvas.getElementAt(points.get(i-4)) != null) {
+        //             Block thisBlock = null;
+        //             Block otherBlock = null;
+        //             // FIND THE BLOCK -- WE KNOW IT'S THERE, WE KNOW ITS POSITION, NOW WE HAVE TO GO GET IT
 
+        //             for(Block b : blocksOnScreen) {
+        //                 if(b.getPosition().equals(points.get(i))) {
+        //                     thisBlock = b;
+        //                 }
+        //                 if(b.getPosition().equals(points.get(i-4))) {
+        //                     otherBlock = b;
+        //                 }
+        //             }
+        //             interactWith(thisBlock, otherBlock);
+        //         }
+        //     }
+        }
+    }
+
+    public void moveDown() {
+        for(int i = 11; i >= 0; i--) {
+
+        }
+    }
+
+    public void moveLeft() {
+        for(int i = 1; i < 16; i++) {
+            if(i != 4 && i != 8 && i != 12) {
+
+            }
+        }
+    }
+
+    public void moveRight() {
+        for(int i = 14; i >= 0; i--) {
+            if(i != 3 && i != 7 && i != 11) {
+
+            }
+        }
+    }
+
+    public void interactWith(Block block, Block otherBlock) {
+        if(block.getVal() != otherBlock.getVal()) {
+            return;
+        }
+        else {
+            System.out.println("hello");
+            Block newBlock = new Block(otherBlock.getIndex(), (otherBlock.getVal()*2), this);
+            blocksOnScreen[otherBlock.getIndex()] = newBlock;
+            blocksOnScreen[block.getIndex()] = null;
+            canvas.remove(block.getBlock());
+            canvas.remove(otherBlock.getBlock());
+        }
+        //     for(int i = 0;i < 4;i++) {
+        //         if (canvas.getElementAt(points.get(i)) != null) {
+        //             block.setPosition(block.getPosition().getX(), min + 150);
+        //         }
+        //     }
+        // }
+        // else{
+        //     block.setVal(otherBlock.getVal() * 2);
+        //     blocksOnScreen.remove(otherBlock);
+        //     blocksOnScreen.remove(block);
+        //     canvas.remove(otherBlock.getBlock());
+        //     canvas.remove(block.getBlock());
+        //     Block newBlock = new Block(block.getPosition().getX(), block.getPosition().getY(), val);
+        //     blocksOnScreen.add(newBlock);
+        //     canvas.add(newBlock.getBlock());
+
+        //     }
+        }
+    
+
+    public void handleBlockInteraction() {
+    }
     
     
 

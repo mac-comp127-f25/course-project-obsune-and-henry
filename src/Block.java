@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import edu.macalester.graphics.*;
 import edu.macalester.graphics.events.Key;
@@ -5,42 +7,39 @@ public class Block {
     //private Rectangle block;
     private Image image;
     private Map<Integer,String> imageCollection = Map.of(2,"AbbyMarsh.jpeg",4,"AliciaJohnson.jpeg",8,"Bretjackson.jpeg");
-    private double thisval;
-    private double x;
-    private double y;
+    private int thisval;
+    private int index;
+    public Game game;
 
-    public Block(double x, double y, double val){
+    public Block(int index, int val, Game game){
+        this.index = index;
+        this.game = game;
         this.thisval = val;
         for (int key:imageCollection.keySet()) {
             if(key == thisval){
-                this.image = new Image(x, y, imageCollection.get(key));
+                this.image = new Image(game.points.get(index).getX(), game.points.get(index).getY(), imageCollection.get(key));
             }
         }
     }
-
     public Point getPosition(){
         return new Point(image.getX(), image.getY());
     }
-    public void setPosition(double x, double y){
-        this.image.setPosition(x, y);
+    public void setPosition(int index){
+        this.image.setPosition(game.points.get(index).getX(), game.points.get(index).getY());
     }
-
-    public double getVal(){
+    public int getVal(){
         return thisval;
     }
-    public void setVal(double thisval){
+    public void setVal(int thisval){
         this.thisval = thisval;
     }
     public Image getBlock(){
         return this.image;
     }
-    public void interactWith(Block otherBlock) {
-        if(this.getBlock() == otherBlock.getBlock()) {
-            combineBlocks(otherBlock);
-        }
+    public void setBlock(int index, Integer val) {
+        this.image = new Image(game.points.get(index).getX(), game.points.get(index).getY(), imageCollection.get(val));
     }
-    public void combineBlocks(Block otherBlock) {
-        this.setVal(otherBlock.getVal() * otherBlock.getVal());
+    public int getIndex() {
+        return this.index;
     }
- 
 }
