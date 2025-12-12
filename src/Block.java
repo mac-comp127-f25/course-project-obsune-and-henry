@@ -44,7 +44,7 @@ public class Block {
      * Sets the position of the blocks position using the index from the points list
      * @param index 
      */
-    public void setPosition(int index) {
+    private void setPosition(int index) {
         this.image.setPosition(game.points.get(index).getX(), game.points.get(index).getY());
     }
     /**
@@ -82,5 +82,9 @@ public class Block {
      */
     public void setIndex(int index) {
         this.index = index;
+    }
+    public void removeBlock(Block block) {
+        block.setIndex(-1);
+        block.setPosition(16);
     }
 }
