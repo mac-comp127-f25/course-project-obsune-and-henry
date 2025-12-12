@@ -13,7 +13,7 @@ public class Game {
     public Game() {
     
     //setting up points to add to list
-    Point NegOne = new Point(-300, -300);
+    Point offScreen = new Point(-300, -300);
     Point zerozero = new Point(55, 55);
     Point zeroone = new Point(205, 55);
     Point zerotwo = new Point(355, 55);
@@ -46,7 +46,7 @@ public class Game {
     points.add(threeone);
     points.add(threetwo);
     points.add(threethree);
-    points.add(NegOne);
+    points.add(offScreen);
 
         //setting up canvas and adding elements from GameBoard
         this.canvas = new CanvasWindow("2048 (MSCS Department Edition)", 700,700);
@@ -61,16 +61,25 @@ public class Game {
         canvas.onKeyDown(event ->
             moveBlock(event.getKey())
         );
-    }
 //------
+    }
+    public static int gridCoordsToIndex(int x, int y) {
+        return x + 4 * y;
+    }
+    public static int indexToXCoord(int index) {
+        return index % 4;
+    }
+    public static int indextoYCoord(int index) {
+        return index/4;
+    }
     /**
      * Adds an image of either Abby or Alicia onto a random position on the game board 
      */
     public void addRandomBlock() {
-        int randIndex = new Random().nextInt(points.size());
+        int randIndex = new Random().nextInt(points.size()-1);
         int valTwoOrFour;
         while (blocksOnScreen[randIndex] != null){
-            randIndex = new Random().nextInt(points.size());
+            randIndex = new Random().nextInt(points.size()-1);
         }
         double randval = new Random().nextDouble();
         if (randval <= 0.7) {
@@ -80,7 +89,7 @@ public class Game {
             valTwoOrFour = 4;
         }
         Block block = new Block(randIndex, valTwoOrFour, this);
-        canvas.add(block.getBlock());
+        canvas.add(block.getImage());
         blocksOnScreen[randIndex] = block;
     }
     /**
@@ -94,27 +103,56 @@ public class Game {
         Key left = Key.LEFT_ARROW;
         Key right = Key.RIGHT_ARROW;
         System.out.println(blocksOnScreen);
-        for(int i = 0; i < 16; i++) {
-            Block block = blocksOnScreen[i];
-            if(block != null) {
-                // if(block.getPosition().getX() >= 55 && block.getPosition().getX() <= 505 && block.getPosition().getY() >= 55 && block.getPosition().getY() <= 505) {
+        addRandomBlock();
                     if(key == up) {
-                        moveUp(block);
+                        for(int y = 0; y < 4;y++ ) {
+                            for(int x = 0;x < 4;x++){
+                                Block block = blocksOnScreen[gridCoordsToIndex(x, y)];
+                                if (block != null) {
+                                    moveUp(block);
+                                }
+                            }
+                        }
                     }
                     if (key == down) {
-                        moveDown(block);
+                        for(int y = 3;y > -1;y--) {
+                            for(int x = 0; x < 4;x++) {
+                                Block block = blocksOnScreen[gridCoordsToIndex(x, y)];
+                                if (block != null) {
+                                    moveDown(block);
+                                }
+                            }
+                        }
                     }
                     if (key == left) {
-                        moveLeft(block);
+                        for(int x = 0;x < 4;x++) {
+                            for(int y = 0; y < 4;y++) {
+                                Block block = blocksOnScreen[gridCoordsToIndex(x, y)];
+                                if (block != null) {
+                                    moveLeft(block);
+                                }
+                            }
+                        }
                     }
                     if (key == right) {
-                        moveRight(block);
+                        for(int x = 3;x > -1;x--) {
+                            for(int y = 0; y < 4;y++) {
+                                Block block = blocksOnScreen[gridCoordsToIndex(x, y)];
+                                if (block != null) {
+                                    moveRight(block);
+                                }
+                            }
+                        }
                     }
-                // }
-                System.out.println(canvas.getElementAt(block.getPosition()));
+        canvas.removeAll();
+        GameBoard board = new GameBoard();
+        canvas.add(board.createGrid());
+        for(Block block:blocksOnScreen) {
+            if (block != null) {
+                canvas.add(block.getImage());
             }
         }
-        addRandomBlock();
+        canvas.draw();
     }
     /**
      * If up-arrow key is pressed, then this method gets called on all blocks
@@ -131,7 +169,6 @@ public class Game {
             block.setIndex(newPosition);
             blocksOnScreen[newPosition] = block;
             blocksOnScreen[currPosition] = null;
-            block.setIndex(newPosition);
             return;
             }
         if (blocksOnScreen[newPosition] != null) {
@@ -154,7 +191,6 @@ public class Game {
             block.setIndex(newPosition);
             blocksOnScreen[newPosition] = block;
             blocksOnScreen[currPosition] = null;
-            block.setIndex(newPosition);
             return;
             }
         if (blocksOnScreen[newPosition] != null) {
@@ -167,7 +203,7 @@ public class Game {
      * @param block
      */
     public void moveLeft(Block block) {
-        if (blocksOnScreen[block.getIndex()].getIndex() == 0 || blocksOnScreen[block.getIndex()].getIndex() == 4 || blocksOnScreen[block.getIndex()].getIndex() == 8 || blocksOnScreen[block.getIndex()].getIndex() == 12) {
+        if (indexToXCoord(block.getIndex()) == 0) {
             return;
         }
         int currPosition = block.getIndex();
@@ -176,35 +212,19 @@ public class Game {
             block.setIndex(newPosition);
             blocksOnScreen[newPosition] = block;
             blocksOnScreen[currPosition] = null;
-            block.setIndex(newPosition);
             return;
             }
         if (blocksOnScreen[newPosition] != null) {
             interactWith(block, blocksOnScreen[newPosition]);
         }
     }
-    //     if (block != null && (blocksOnScreen[block.getIndex()].getIndex() != 0 || blocksOnScreen[block.getIndex()].getIndex() != 4 || blocksOnScreen[block.getIndex()].getIndex() != 8 || blocksOnScreen[block.getIndex()].getIndex() != 12)) {
-    //         while (blocksOnScreen[block.getIndex()-1] == null) {
-    //             if (blocksOnScreen[block.getIndex()].getIndex() == 0 || blocksOnScreen[block.getIndex()].getIndex() == 4 || blocksOnScreen[block.getIndex()].getIndex() == 8 || blocksOnScreen[block.getIndex()].getIndex() == 12) {
-    //                 System.out.println("hello");
-    //                 block.getIndex();
-    //                 break;
-    //             }
-    //             block.setIndex(block.getIndex()-1);
-    //             break;
-    //         }
-    //         if (blocksOnScreen[block.getIndex()-1] != null) {
-    //             interactWith(block, blocksOnScreen[block.getIndex()-1]);
-    //         }
-    //     }
-    
     /**
      * If left-arrow key is pressed, then this method gets called on all blocks
      * to move right
      * @param block
      */
     public void moveRight(Block block) {
-        if (blocksOnScreen[block.getIndex()].getIndex() == 3 || blocksOnScreen[block.getIndex()].getIndex() == 7 || blocksOnScreen[block.getIndex()].getIndex() == 11 || blocksOnScreen[block.getIndex()].getIndex() == 15) {
+        if (indexToXCoord(block.getIndex()) == 3) {
             return;
         }
         int currPosition = block.getIndex();
@@ -213,7 +233,6 @@ public class Game {
             block.setIndex(newPosition);
             blocksOnScreen[newPosition] = block;
             blocksOnScreen[currPosition] = null;
-            block.setIndex(newPosition);
             return;
             }
         if (blocksOnScreen[newPosition] != null) {
@@ -232,9 +251,9 @@ public class Game {
             Block newBlock = new Block(otherBlock.getIndex(), (otherBlock.getVal()*2), this);
             blocksOnScreen[otherBlock.getIndex()] = newBlock;
             blocksOnScreen[block.getIndex()] = null;
-            canvas.remove(block.getBlock());
-            canvas.remove(otherBlock.getBlock());
-            canvas.add(newBlock.getBlock());
+            canvas.remove(block.getImage());
+            canvas.remove(otherBlock.getImage());
+            canvas.add(newBlock.getImage());
             block.removeBlock(otherBlock);
             block.removeBlock(block);
             canvas.draw();

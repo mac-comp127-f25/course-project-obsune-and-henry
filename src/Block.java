@@ -58,7 +58,7 @@ public class Block {
      * Returns the image of the block
      * @return
      */
-    public Image getBlock() {
+    public Image getImage() {
         return this.image;
     }
     /**
@@ -82,9 +82,9 @@ public class Block {
      */
     public void setIndex(int index) {
         this.index = index;
+        this.setPosition(index);
     }
     public void removeBlock(Block block) {
-        block.setIndex(-1);
-        block.setPosition(16);
+        block.setIndex(16);
     }
 }
