@@ -3,15 +3,16 @@ import java.util.List;
 import java.util.Random;
 import edu.macalester.graphics.*;
 import edu.macalester.graphics.events.Key;
-import edu.macalester.graphics.events.KeyboardEventHandler;
 public class Game {
     //---list of each board point for a 140x140 block---
     public List<Point> points = new ArrayList<>();
+
+
     private CanvasWindow canvas;
-    private KeyboardEventHandler handler;
     private Block[] blocksOnScreen = new Block[16];
-    private int val;
     public Game() {
+    
+    //setting up points to add to list
     Point zerozero = new Point(55, 55);
     Point zeroone = new Point(205, 55);
     Point zerotwo = new Point(355, 55);
@@ -44,20 +45,20 @@ public class Game {
     points.add(threeone);
     points.add(threetwo);
     points.add(threethree);
+
+        //setting up canvas and adding elements from GameBoard
         this.canvas = new CanvasWindow("2048 (MSCS Department Edition)", 700,700);
         GameBoard board = new GameBoard();
         canvas.add(board.createGrid());
-        //blocks list
-        this.blocksOnScreen = blocksOnScreen;
+
 //-------
-    //where stuff happens
+    //Called during gameplay
         addRandomBlock();
         addRandomBlock();
         //call to move block from keydown (when list ready, iterate over each for moveblock)
         canvas.onKeyDown(event ->
             moveBlock(event.getKey())
         );
-        // canvas.draw();
     }
 //------
     /**
@@ -65,17 +66,18 @@ public class Game {
      */
     public void addRandomBlock() {
         int randIndex = new Random().nextInt(points.size());
+        int valTwoOrFour;
         while (blocksOnScreen[randIndex] != null){
             randIndex = new Random().nextInt(points.size());
         }
         double randval = new Random().nextDouble();
         if (randval <= 0.7) {
-            val = 2;
+            valTwoOrFour = 2;
         }
         else {
-            val = 4;
+            valTwoOrFour = 4;
         }
-        Block block = new Block(randIndex, val, this);
+        Block block = new Block(randIndex, valTwoOrFour, this);
         canvas.add(block.getBlock());
         blocksOnScreen[randIndex] = block;
     }
