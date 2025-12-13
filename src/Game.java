@@ -104,46 +104,46 @@ public class Game {
         Key right = Key.RIGHT_ARROW;
         System.out.println(blocksOnScreen);
         addRandomBlock();
-                    if(key == up) {
-                        for(int y = 0; y < 4;y++ ) {
-                            for(int x = 0;x < 4;x++){
-                                Block block = blocksOnScreen[gridCoordsToIndex(x, y)];
-                                if (block != null) {
-                                    moveUp(block);
-                                }
-                            }
-                        }
+        if(key == up) {
+            for(int y = 0; y < 4;y++ ) {
+                for(int x = 0;x < 4;x++){
+                    Block block = blocksOnScreen[gridCoordsToIndex(x, y)];
+                    if (block != null) {
+                        moveUp(block);
                     }
-                    if (key == down) {
-                        for(int y = 3;y > -1;y--) {
-                            for(int x = 0; x < 4;x++) {
-                                Block block = blocksOnScreen[gridCoordsToIndex(x, y)];
-                                if (block != null) {
-                                    moveDown(block);
-                                }
-                            }
-                        }
+                }
+            }
+        }
+        if (key == down) {
+            for(int y = 3;y > -1;y--) {
+                for(int x = 0; x < 4;x++) {
+                    Block block = blocksOnScreen[gridCoordsToIndex(x, y)];
+                    if (block != null) {
+                        moveDown(block);
                     }
-                    if (key == left) {
-                        for(int x = 0;x < 4;x++) {
-                            for(int y = 0; y < 4;y++) {
-                                Block block = blocksOnScreen[gridCoordsToIndex(x, y)];
-                                if (block != null) {
-                                    moveLeft(block);
-                                }
-                            }
-                        }
+                }
+            }
+        }
+        if (key == left) {
+            for(int x = 0;x < 4;x++) {
+                for(int y = 0; y < 4;y++) {
+                    Block block = blocksOnScreen[gridCoordsToIndex(x, y)];
+                    if (block != null) {
+                        moveLeft(block);
                     }
-                    if (key == right) {
-                        for(int x = 3;x > -1;x--) {
-                            for(int y = 0; y < 4;y++) {
-                                Block block = blocksOnScreen[gridCoordsToIndex(x, y)];
-                                if (block != null) {
-                                    moveRight(block);
-                                }
-                            }
-                        }
+                }
+            }
+        }
+        if (key == right) {
+            for(int x = 3;x > -1;x--) {
+                for(int y = 0; y < 4;y++) {
+                    Block block = blocksOnScreen[gridCoordsToIndex(x, y)];
+                    if (block != null) {
+                        moveRight(block);
                     }
+                }
+            }
+        }
         canvas.removeAll();
         GameBoard board = new GameBoard();
         canvas.add(board.createGrid());
@@ -165,15 +165,25 @@ public class Game {
         }
         int currPosition = block.getIndex();
         int newPosition = block.getIndex() - 4;
-        if (blocksOnScreen[newPosition] == null) {
-            block.setIndex(newPosition);
-            blocksOnScreen[newPosition] = block;
-            blocksOnScreen[currPosition] = null;
-            return;
+        //iterates until something happens
+        for (int i=0;i<4; i++){
+            //check if at end
+            if (blocksOnScreen[block.getIndex()].getIndex() < 4) {
+                return;
             }
-        if (blocksOnScreen[newPosition] != null) {
-            interactWith(block, blocksOnScreen[newPosition]);
+            //check if block next
+            if (blocksOnScreen[newPosition] != null) {
+                break;
+            }
+            if (blocksOnScreen[newPosition] == null) {
+                block.setIndex(newPosition);
+                blocksOnScreen[newPosition] = block;
+                blocksOnScreen[currPosition] = null;
+                currPosition = block.getIndex();
+                newPosition = block.getIndex() - 4;
+            }
         }
+        interactWith(block, blocksOnScreen[newPosition]);
     }
     
     /**
@@ -187,15 +197,25 @@ public class Game {
         }
         int currPosition = block.getIndex();
         int newPosition = block.getIndex() + 4;
-        if (blocksOnScreen[newPosition] == null) {
-            block.setIndex(newPosition);
-            blocksOnScreen[newPosition] = block;
-            blocksOnScreen[currPosition] = null;
-            return;
+        //iterates until something happens
+        for (int i=0;i<4; i++){
+            //check if at end
+            if (blocksOnScreen[block.getIndex()].getIndex() > 11) {
+                return;
             }
-        if (blocksOnScreen[newPosition] != null) {
-            interactWith(block, blocksOnScreen[newPosition]);
+            //check if block next
+            if (blocksOnScreen[newPosition] != null) {
+                break;
+            }
+            if (blocksOnScreen[newPosition] == null) {
+                block.setIndex(newPosition);
+                blocksOnScreen[newPosition] = block;
+                blocksOnScreen[currPosition] = null;
+                currPosition = block.getIndex();
+                newPosition = block.getIndex() + 4;
+            }
         }
+        interactWith(block, blocksOnScreen[newPosition]);
     }
     /**
      * If left-arrow key is pressed, then this method gets called on all blocks
@@ -208,18 +228,29 @@ public class Game {
         }
         int currPosition = block.getIndex();
         int newPosition = block.getIndex() - 1;
-        if (blocksOnScreen[newPosition] == null) {
-            block.setIndex(newPosition);
-            blocksOnScreen[newPosition] = block;
-            blocksOnScreen[currPosition] = null;
-            return;
+        //iterates until something happens
+        for (int i=0;i<4; i++){
+            //check if at end
+            if (indexToXCoord(block.getIndex()) == 0) {
+                return;
             }
-        if (blocksOnScreen[newPosition] != null) {
-            interactWith(block, blocksOnScreen[newPosition]);
+            //check if block next
+            if (blocksOnScreen[newPosition] != null) {
+                break;
+            }
+            if (blocksOnScreen[newPosition] == null) {
+                block.setIndex(newPosition);
+                blocksOnScreen[newPosition] = block;
+                blocksOnScreen[currPosition] = null;
+                currPosition = block.getIndex();
+                newPosition = block.getIndex() - 1;
+            }
         }
+        interactWith(block, blocksOnScreen[newPosition]);
     }
+
     /**
-     * If left-arrow key is pressed, then this method gets called on all blocks
+     * If right-arrow key is pressed, then this method gets called on all blocks
      * to move right
      * @param block
      */
@@ -229,15 +260,25 @@ public class Game {
         }
         int currPosition = block.getIndex();
         int newPosition = block.getIndex() + 1;
-        if (blocksOnScreen[newPosition] == null) {
-            block.setIndex(newPosition);
-            blocksOnScreen[newPosition] = block;
-            blocksOnScreen[currPosition] = null;
-            return;
+        //iterates until something happens
+        for (int i=0;i<4; i++){
+            //check if at end
+            if (indexToXCoord(block.getIndex()) == 3) {
+                return;
             }
-        if (blocksOnScreen[newPosition] != null) {
-            interactWith(block, blocksOnScreen[newPosition]);
+            //check if block next
+            if (blocksOnScreen[newPosition] != null) {
+                break;
+            }
+            if (blocksOnScreen[newPosition] == null) {
+                block.setIndex(newPosition);
+                blocksOnScreen[newPosition] = block;
+                blocksOnScreen[currPosition] = null;
+                currPosition = block.getIndex();
+                newPosition = block.getIndex() + 1;
+            }
         }
+        interactWith(block, blocksOnScreen[newPosition]);
     }
     /**
      * Gets called in the four directional move methods to combine the blocks
