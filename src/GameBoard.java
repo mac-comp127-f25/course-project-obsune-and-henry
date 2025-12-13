@@ -1,7 +1,14 @@
 import edu.macalester.graphics.Line;
+import edu.macalester.graphics.Rectangle;
 import edu.macalester.graphics.GraphicsGroup;
+import edu.macalester.graphics.GraphicsText;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 public class GameBoard {
+    public List<GraphicsText> keyBoard = new ArrayList<>();
+    public Rectangle board;
+
     public GameBoard() {
     }
     /**
@@ -50,5 +57,45 @@ public class GameBoard {
         border4.setStrokeWidth(10);
         border4.setStrokeColor(Color.BLACK);
         return grid;
+    }
+    public GraphicsGroup createKeyBoard() {
+        GraphicsGroup keyBoard = new GraphicsGroup();
+        Rectangle board = new Rectangle(700, 125, 225, 300);
+        board.setFillColor(Color.GRAY);
+        keyBoard.add(board);
+        GraphicsText abby = new GraphicsText("Abby Marsh: 2", 750, 150);
+        abby.setFillColor(Color.RED);
+        keyBoard.add(abby);
+        GraphicsText alicia = new GraphicsText("Alicia Johnson: 4", 750, 175);
+        alicia.setFillColor(Color.ORANGE);
+        keyBoard.add(alicia);
+        GraphicsText bret = new GraphicsText("Bret Jackson: 8", 750, 200);
+        bret.setFillColor(Color.YELLOW);
+        keyBoard.add(bret);
+        GraphicsText dan = new GraphicsText("Dan Drake: 16", 750, 225);
+        dan.setFillColor(Color.GREEN);
+        keyBoard.add(dan);
+        GraphicsText getiria = new GraphicsText("Getiria Onsongo: 32", 750, 250);
+        getiria.setFillColor(Color.BLUE);
+        keyBoard.add(getiria);
+        GraphicsText lian = new GraphicsText("Lian Duan: 64", 750, 275);
+        lian.setFillColor(new Color(75, 0, 130));
+        keyBoard.add(lian);
+        GraphicsText paul = new GraphicsText("Paul Cantrell: 128", 750, 300);
+        paul.setFillColor(new Color(128, 0, 255));
+        keyBoard.add(paul);
+        GraphicsText shilad = new GraphicsText("Shilad Sen: 256", 750, 325);
+        shilad.setFillColor(Color.RED);
+        keyBoard.add(shilad);
+        GraphicsText suhas = new GraphicsText("Suhas Arehalli: 512", 750, 350);
+        suhas.setFillColor(Color.ORANGE);
+        keyBoard.add(suhas);
+        GraphicsText susan = new GraphicsText("Susan Fox: 1024", 750, 375);
+        susan.setFillColor(Color.YELLOW);
+        keyBoard.add(susan);
+        GraphicsText william = new GraphicsText("William Mitchell: 2048!", 750, 400);
+        william.setFillColor(Color.GREEN);
+        keyBoard.add(william);
+        return keyBoard;
     }
 }
