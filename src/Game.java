@@ -3,7 +3,6 @@ import java.util.List;
 import java.util.Random;
 import edu.macalester.graphics.*;
 import edu.macalester.graphics.events.Key;
-import java.awt.Color;
 public class Game {
     //---list of each board point for a 140x140 block---
     public List<Point> points = new ArrayList<>();
@@ -51,46 +50,6 @@ public class Game {
     GameBoard board = new GameBoard();
     canvas.add(board.createGrid());
     canvas.add(board.createKeyBoard());
-    // Key
-    // GraphicsText abby = new GraphicsText("Abby Marsh: 2", 750, 150);
-    // abby.setFillColor(Color.RED);
-    // keyList.add(abby);
-    // GraphicsText alicia = new GraphicsText("Alicia Johnson: 4", 750, 175);
-    // alicia.setFillColor(Color.ORANGE);
-    // keyList.add(alicia);
-    // GraphicsText bret = new GraphicsText("Bret Jackson: 8", 750, 200);
-    // bret.setFillColor(Color.YELLOW);
-    // keyList.add(bret);
-    // GraphicsText dan = new GraphicsText("Dan Drake: 16", 750, 225);
-    // dan.setFillColor(Color.GREEN);
-    // keyList.add(dan);
-    // GraphicsText getiria = new GraphicsText("Getiria Onsongo: 32", 750, 250);
-    // getiria.setFillColor(Color.BLUE);
-    // keyList.add(getiria);
-    // GraphicsText lian = new GraphicsText("Lian Duan: 64", 750, 275);
-    // lian.setFillColor(new Color(75, 0, 130));
-    // keyList.add(lian);
-    // GraphicsText paul = new GraphicsText("Paul Cantrell: 128", 750, 300);
-    // paul.setFillColor(new Color(128, 0, 255));
-    // keyList.add(paul);
-    // GraphicsText shilad = new GraphicsText("Shilad Sen: 256", 750, 325);
-    // shilad.setFillColor(Color.RED);
-    // keyList.add(shilad);
-    // GraphicsText suhas = new GraphicsText("Suhas Arehalli: 512", 750, 350);
-    // suhas.setFillColor(Color.ORANGE);
-    // keyList.add(suhas);
-    // GraphicsText susan = new GraphicsText("Susan Fox: 1024", 750, 375);
-    // susan.setFillColor(Color.YELLOW);
-    // keyList.add(susan);
-    // GraphicsText william = new GraphicsText("William Mitchell: 2048!", 750, 400);
-    // william.setFillColor(Color.GREEN);
-    // keyList.add(william);
-    // Rectangle keyBoard = new Rectangle(700, 125, 225, 300);
-    // keyBoard.setFillColor(Color.GRAY);
-    // canvas.add(keyBoard);
-    // for(GraphicsText key: keyList){
-    //     canvas.add(key);
-    // }
 //-------
     //Called during gameplay
         addRandomBlock();
@@ -185,6 +144,7 @@ public class Game {
         canvas.removeAll();
         GameBoard board = new GameBoard();
         canvas.add(board.createGrid());
+        canvas.add(board.createKeyBoard());
         for(Block block:blocksOnScreen) {
             if (block != null) {
                 canvas.add(block.getImage());
@@ -223,7 +183,6 @@ public class Game {
         }
         interactWith(block, blocksOnScreen[newPosition]);
     }
-    
     /**
      * If down-arrow key is pressed, then this method gets called on all blocks
      * to move down
@@ -286,7 +245,6 @@ public class Game {
         }
         interactWith(block, blocksOnScreen[newPosition]);
     }
-
     /**
      * If right-arrow key is pressed, then this method gets called on all blocks
      * to move right
