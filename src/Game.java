@@ -8,7 +8,6 @@ public class Game {
     public List<Point> points = new ArrayList<>();
     private CanvasWindow canvas;
     private Block[] blocksOnScreen = new Block[16];
-    private List<GraphicsText> keyList = new ArrayList<>();
     public Game() {
     //setting up points to add to list
     Point offScreen = new Point(-300, -300);
@@ -50,6 +49,7 @@ public class Game {
     GameBoard board = new GameBoard();
     canvas.add(board.createGrid());
     canvas.add(board.createKeyBoard());
+    canvas.add(board.border());
 //-------
     //Called during gameplay
         addRandomBlock();
@@ -90,7 +90,7 @@ public class Game {
         blocksOnScreen[randIndex] = block;
     }
 
-        //for testing the win logic, adds 512 block randomly
+        //for testing the win logic, adds 1024 block randomly
         public void addHighBlock() {
         int randIndex = new Random().nextInt(points.size()-1);
         while (blocksOnScreen[randIndex] != null){
@@ -167,6 +167,7 @@ public class Game {
             GameBoard board = new GameBoard();
             canvas.add(board.createGrid());
             canvas.add(board.createKeyBoard());
+            canvas.add(board.border());
             for(Block block:blocksOnScreen) {
                 if (block != null) {
                     canvas.add(block.getImage());

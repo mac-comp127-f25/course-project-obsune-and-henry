@@ -108,6 +108,35 @@ public class GameBoard {
         return keyBoard;
     }
 
+    public GraphicsGroup border(){
+        GraphicsGroup borderlines = new GraphicsGroup();
+        Line borderu = new Line(0, 0, 950, 0);
+        borderu.setStrokeColor(Color.RED);
+        borderu.setStrokeWidth(18);
+        
+        
+        Line borderl = new Line(0, 0, 0, 700);
+        borderl.setStrokeColor(Color.GREEN);
+        borderl.setStrokeWidth(18);
+        borderlines.add(borderl);
+               
+        Line borderr = new Line(950, 700, 950, 0);
+        borderr.setStrokeColor(Color.BLUE);
+        borderr.setStrokeWidth(18);
+        borderlines.add(borderr);
+             
+        Line borderd = new Line(950, 700, 0, 700);
+        borderd.setStrokeColor(Color.YELLOW);
+        borderd.setStrokeWidth(18);
+        
+        //adds top and bottom last so they overlap
+        borderlines.add(borderu);
+        borderlines.add(borderd);
+        
+
+        return borderlines;
+    }
+
     public GraphicsGroup winGroup(){
     GraphicsGroup winTexts = new GraphicsGroup();
     GraphicsText winText0 = new GraphicsText("You Win!", 750, 500);
