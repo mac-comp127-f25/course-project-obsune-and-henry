@@ -13,7 +13,7 @@ public class Block {
         Map.entry(256, "Shilad.jpeg"),
         Map.entry(512, "Suhas.jpeg"),
         Map.entry(1024, "SusanFox.png"),
-        Map.entry(2048, "WilliamMitchell.jpeg"));    
+        Map.entry(2048, "WilliamMitchel.jpeg"));    
     private int thisval;
     private int index;
     public Game game;

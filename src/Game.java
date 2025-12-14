@@ -89,6 +89,17 @@ public class Game {
         canvas.add(block.getImage());
         blocksOnScreen[randIndex] = block;
     }
+
+        //for testing the win logic, adds 512 block randomly
+        public void addHighBlock() {
+        int randIndex = new Random().nextInt(points.size()-1);
+        while (blocksOnScreen[randIndex] != null){
+            randIndex = new Random().nextInt(points.size()-1);
+        }
+        Block block = new Block(randIndex, 1024, this);
+        canvas.add(block.getImage());
+        blocksOnScreen[randIndex] = block;
+    }
     /**
      * Comprises all four of the move methods into one and calls each one 
      * based off the key that is pressed by the user
@@ -99,8 +110,15 @@ public class Game {
         Key down = Key.DOWN_ARROW;
         Key left = Key.LEFT_ARROW;
         Key right = Key.RIGHT_ARROW;
-        System.out.println(blocksOnScreen);
-        addRandomBlock();
+        boolean validKey = false;
+        if(key == up || key == down || key == left || key == right){
+            validKey = true;
+        }
+        //key for test method
+        Key test = Key.T;
+        if (validKey == true){
+            addRandomBlock();
+        }
         if(key == up) {
             for(int y = 0; y < 4;y++ ) {
                 for(int x = 0;x < 4;x++){
@@ -141,16 +159,31 @@ public class Game {
                 }
             }
         }
-        canvas.removeAll();
-        GameBoard board = new GameBoard();
-        canvas.add(board.createGrid());
-        canvas.add(board.createKeyBoard());
-        for(Block block:blocksOnScreen) {
-            if (block != null) {
-                canvas.add(block.getImage());
+        if (key == test){
+            addHighBlock();
+        }
+        if (validKey == true){
+            canvas.removeAll();
+            GameBoard board = new GameBoard();
+            canvas.add(board.createGrid());
+            canvas.add(board.createKeyBoard());
+            for(Block block:blocksOnScreen) {
+                if (block != null) {
+                    canvas.add(block.getImage());
+                }
             }
         }
         canvas.draw();
+
+        //win check after each move
+        for (Block block : blocksOnScreen){
+            if (block != null){
+                if (block.getVal() == 2048){
+                    winGame();
+                }
+            }
+        }
+
     }
     /**
      * If up-arrow key is pressed, then this method gets called on all blocks
@@ -284,7 +317,9 @@ public class Game {
      */
     public void interactWith(Block block, Block otherBlock) {
         if(block.getVal() == otherBlock.getVal()) {
-            System.out.println("hello");
+            if (otherBlock.getVal()*2 > 2048){
+                return;
+            }
             Block newBlock = new Block(otherBlock.getIndex(), (otherBlock.getVal()*2), this);
             blocksOnScreen[otherBlock.getIndex()] = newBlock;
             blocksOnScreen[block.getIndex()] = null;
@@ -298,7 +333,15 @@ public class Game {
         else {
             return;
         }
+
     }
+
+    public void winGame(){
+        GameBoard winboard = new GameBoard();
+        canvas.add(winboard.winGroup());
+
+    }
+
     public static void main(String args[]) {
         new Game();
     }

@@ -2,6 +2,8 @@ import edu.macalester.graphics.Line;
 import edu.macalester.graphics.Rectangle;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.GraphicsText;
+import edu.macalester.graphics.Image;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,13 @@ public class GameBoard {
     /**
      * Creates a game board with 4 internal, vertical lines, 4 internal 
      * horizontal lines, and 4 lines to make the border.
-     * In all, there are 16 total boxes 
+     * In all, there are 16 total boxes
+     * 
+     * Creates a key board that displays the number value that goes
+     * with each image on text.
+     * 
+     * Creates text that will display upon winning or losing
+     * 
      * @return
      */
     public GraphicsGroup createGrid() {
@@ -96,6 +104,26 @@ public class GameBoard {
         GraphicsText william = new GraphicsText("William Mitchell: 2048!", 750, 400);
         william.setFillColor(Color.GREEN);
         keyBoard.add(william);
+        
         return keyBoard;
     }
+
+    public GraphicsGroup winGroup(){
+    GraphicsGroup winTexts = new GraphicsGroup();
+    GraphicsText winText0 = new GraphicsText("You Win!", 750, 500);
+    GraphicsText winText1 = new GraphicsText("You Got 2048!", 750, 530);
+    Image partyPopper = new Image(750, 550, "PartyImage.png");
+    winText0.setFontSize(20);
+    winText1.setFontSize(20);
+    winText0.setStrokeWidth(0.3);
+    winText1.setStrokeWidth(0.3);
+    winTexts.add(winText0);
+    winTexts.add(winText1);
+    winTexts.add(partyPopper);
+    return winTexts;
+    }
+
+    
+    
+
 }
