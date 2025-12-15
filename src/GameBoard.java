@@ -21,7 +21,7 @@ public class GameBoard {
      * Creates a key board that displays the number value that goes
      * with each image on text.
      * 
-     * Creates text that will display upon winning or losing
+     * Creates text that will display upon winning or losing, winning also displays a celebratory image
      * 
      * @return
      */
@@ -150,6 +150,19 @@ public class GameBoard {
     winTexts.add(winText1);
     winTexts.add(partyPopper);
     return winTexts;
+    }
+
+    public GraphicsGroup loseGroup(){
+    GraphicsGroup loseTexts = new GraphicsGroup();
+    GraphicsText loseText0 = new GraphicsText("You Lose!", 750, 500);
+    GraphicsText loseText1 = new GraphicsText("Yikes!", 750, 530);
+    loseText0.setFontSize(20);
+    loseText1.setFontSize(20);
+    loseText0.setStrokeWidth(0.3);
+    loseText1.setStrokeWidth(0.3);
+    loseTexts.add(loseText0);
+    loseTexts.add(loseText1);
+    return loseTexts;
     }
 
     

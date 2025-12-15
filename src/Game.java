@@ -8,6 +8,10 @@ public class Game {
     public List<Point> points = new ArrayList<>();
     private CanvasWindow canvas;
     private Block[] blocksOnScreen = new Block[16];
+    private boolean finalup = false;
+    private boolean finaldown = false;
+    private boolean finalleft = false;
+    private boolean finalright = false;
     public Game() {
     //setting up points to add to list
     Point offScreen = new Point(-300, -300);
@@ -79,9 +83,7 @@ public class Game {
         for(int i = 0; i < 16; i++) {
             if (blocksOnScreen[i] != null) {
                 count++;
-                System.out.println(blocksOnScreen[i]);
                 if (count == 16) {
-                    System.out.println("hi");
                     return;
                 }
             }
@@ -116,16 +118,32 @@ public class Game {
      * @param key       Corresponds with the key that is pressed
      */
     public void moveBlock(Key key) {
+        //key for test method
+        Key test = Key.T;
         Key up = Key.UP_ARROW;
         Key down = Key.DOWN_ARROW;
         Key left = Key.LEFT_ARROW;
         Key right = Key.RIGHT_ARROW;
+
+        //key for window close
+        Key close = Key.ESCAPE;
+        if (key == close){
+            canvas.closeWindow();
+        }
+        
         boolean validKey = false;
+        boolean hasWon = false;
+
+        //saving current screen for comparison after movement
+        List<Block> currentBlocks = new ArrayList<>();
+        List<Block> currentBlocks1 = new ArrayList<>();
+        for (Block block: blocksOnScreen){
+            currentBlocks.add(block);
+        }
         if(key == up || key == down || key == left || key == right){
             validKey = true;
         }
-        //key for test method
-        Key test = Key.T;
+
         if(key == up) {
             for(int y = 0; y < 4;y++ ) {
                 for(int x = 0;x < 4;x++){
@@ -184,14 +202,51 @@ public class Game {
         }
         canvas.draw();
 
-        //win check after each move
+
+        for (Block block: blocksOnScreen){
+            currentBlocks1.add(block);
+        }
+        int samenessCount = 0;
+        for (Block block : currentBlocks){
+            for (Block otherblock : currentBlocks1){
+                if (block == otherblock){
+                    samenessCount++;
+                }
+            }
+        }
+        if (samenessCount == 16){
+            if (key == up){
+                finalup = true;
+            }
+            if (key == down){
+                finaldown = true;
+            }
+            if (key == left){
+                finalleft = true;
+            }
+            if (key == down){
+                finalright = true;
+            }
+        }   
+        else{
+            finalup = false;
+            finaldown = false;
+            finalleft = false;
+            finalright = false;
+        }
         for (Block block : blocksOnScreen){
             if (block != null){
                 if (block.getVal() == 2048){
+                    hasWon = true;
                     winGame();
                 }
             }
         }
+        if (finalup == true && finaldown == true && finalleft == true && finalright == true && hasWon != true){
+            loseGame();
+        }
+        //win check
+
 
     }
     /**
@@ -350,15 +405,8 @@ public class Game {
 
     }
     public void loseGame() {
-        int count = 0;
-        for(int i = 0; i < 16; i++) {
-            if (blocksOnScreen[i] != null) {
-                count++;
-                if (count == 16) {
-                    
-                }
-            }
-        }
+        GameBoard loseboard = new GameBoard();
+        canvas.add(loseboard.loseGroup());
     }
     public static void main(String args[]) {
         new Game();

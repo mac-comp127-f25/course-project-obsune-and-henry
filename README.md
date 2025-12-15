@@ -21,6 +21,7 @@ Give a brief technical guide to running your code:
 What are its technical requirements? (At a minimum, it requires that you have Java 17/21 installed, because that’s what Kilt Graphics requires. Anything else?)
 How should somebody run the program? Where is the main class?
 Acknowledge any help, references, inspiration, or outside resources you used. If your game includes any art or sound assets, or includes the work of others in any way, credit the creator(s) and link to the source(s).
+lewis, nurain, dan
 Known issues:
 
 Are there fundamental design limitations that users should be aware of?
