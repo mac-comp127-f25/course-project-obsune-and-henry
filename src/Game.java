@@ -100,7 +100,6 @@ public class Game {
         canvas.add(block.getImage());
         blocksOnScreen[randIndex] = block;
     }
-
         //for testing the win logic, adds 1024 block randomly
         public void addHighBlock() {
         int randIndex = new Random().nextInt(points.size()-1);
@@ -127,9 +126,6 @@ public class Game {
         }
         //key for test method
         Key test = Key.T;
-        // if (validKey == true){
-        //     addRandomBlock();
-        // }
         if(key == up) {
             for(int y = 0; y < 4;y++ ) {
                 for(int x = 0;x < 4;x++){
