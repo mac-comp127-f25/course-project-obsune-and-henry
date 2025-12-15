@@ -8,6 +8,7 @@ public class Game {
     public List<Point> points = new ArrayList<>();
     private CanvasWindow canvas;
     private Block[] blocksOnScreen = new Block[16];
+    //will represent the "final" key presses before game lose
     private boolean finalup = false;
     private boolean finaldown = false;
     private boolean finalleft = false;
@@ -74,7 +75,7 @@ public class Game {
         return index/4;
     }
     /**
-     * Adds an image of either Abby or Alicia onto a random position on the game board 
+     * Adds an image of either Abby or Alicia onto a random position on the game board as long as there is open space
      */
     public void addRandomBlock() {
         int randIndex = new Random().nextInt(points.size()-1);
@@ -102,8 +103,8 @@ public class Game {
         canvas.add(block.getImage());
         blocksOnScreen[randIndex] = block;
     }
-        //for testing the win logic, adds 1024 block randomly
-        public void addHighBlock() {
+        //for testing/demonstrating the win logic, adds 1024 block randomly
+    public void addHighBlock() {
         int randIndex = new Random().nextInt(points.size()-1);
         while (blocksOnScreen[randIndex] != null){
             randIndex = new Random().nextInt(points.size()-1);
@@ -120,20 +121,18 @@ public class Game {
     public void moveBlock(Key key) {
         //key for test method
         Key test = Key.T;
+        //movement keys
         Key up = Key.UP_ARROW;
         Key down = Key.DOWN_ARROW;
         Key left = Key.LEFT_ARROW;
         Key right = Key.RIGHT_ARROW;
-
         //key for window close
         Key close = Key.ESCAPE;
         if (key == close){
             canvas.closeWindow();
         }
-        
         boolean validKey = false;
         boolean hasWon = false;
-
         //saving current screen for comparison after movement
         List<Block> currentBlocks = new ArrayList<>();
         List<Block> currentBlocks1 = new ArrayList<>();
@@ -143,7 +142,6 @@ public class Game {
         if(key == up || key == down || key == left || key == right){
             validKey = true;
         }
-
         if(key == up) {
             for(int y = 0; y < 4;y++ ) {
                 for(int x = 0;x < 4;x++){
@@ -202,7 +200,8 @@ public class Game {
         }
         canvas.draw();
 
-
+        //Checks for win/loss after each move, if all 4 directions don't move anything, game over.
+        //If 2048 is on board, victory.
         for (Block block: blocksOnScreen){
             currentBlocks1.add(block);
         }
@@ -242,13 +241,11 @@ public class Game {
                 }
             }
         }
-        if (finalup == true && finaldown == true && finalleft == true && finalright == true && hasWon != true){
+        if (hasWon != true && finalup == true && finaldown == true && finalleft == true && finalright == true){
             loseGame();
         }
-        //win check
-
-
     }
+
     /**
      * If up-arrow key is pressed, then this method gets called on all blocks
      * to move up
@@ -381,6 +378,7 @@ public class Game {
      */
     public void interactWith(Block block, Block otherBlock) {
         if(block.getVal() == otherBlock.getVal()) {
+            //does not merge past 2048
             if (otherBlock.getVal()*2 > 2048){
                 return;
             }
@@ -399,11 +397,13 @@ public class Game {
         }
 
     }
+    //adds win text/graphic to canvas, signifying a win
     public void winGame(){
         GameBoard winboard = new GameBoard();
         canvas.add(winboard.winGroup());
 
     }
+    //adds lose text to canvas, signifying a loss
     public void loseGame() {
         GameBoard loseboard = new GameBoard();
         canvas.add(loseboard.loseGroup());
