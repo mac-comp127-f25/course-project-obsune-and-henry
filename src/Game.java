@@ -75,6 +75,17 @@ public class Game {
     public void addRandomBlock() {
         int randIndex = new Random().nextInt(points.size()-1);
         int valTwoOrFour;
+        int count = 0;
+        for(int i = 0; i < 16; i++) {
+            if (blocksOnScreen[i] != null) {
+                count++;
+                System.out.println(blocksOnScreen[i]);
+                if (count == 16) {
+                    System.out.println("hi");
+                    return;
+                }
+            }
+        }     
         while (blocksOnScreen[randIndex] != null){
             randIndex = new Random().nextInt(points.size()-1);
         }
@@ -116,9 +127,9 @@ public class Game {
         }
         //key for test method
         Key test = Key.T;
-        if (validKey == true){
-            addRandomBlock();
-        }
+        // if (validKey == true){
+        //     addRandomBlock();
+        // }
         if(key == up) {
             for(int y = 0; y < 4;y++ ) {
                 for(int x = 0;x < 4;x++){
@@ -173,6 +184,7 @@ public class Game {
                     canvas.add(block.getImage());
                 }
             }
+            addRandomBlock();
         }
         canvas.draw();
 
@@ -336,13 +348,22 @@ public class Game {
         }
 
     }
-
     public void winGame(){
         GameBoard winboard = new GameBoard();
         canvas.add(winboard.winGroup());
 
     }
-
+    public void loseGame() {
+        int count = 0;
+        for(int i = 0; i < 16; i++) {
+            if (blocksOnScreen[i] != null) {
+                count++;
+                if (count == 16) {
+                    
+                }
+            }
+        }
+    }
     public static void main(String args[]) {
         new Game();
     }
