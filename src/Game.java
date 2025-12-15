@@ -1,0 +1,414 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import edu.macalester.graphics.*;
+import edu.macalester.graphics.events.Key;
+public class Game {
+    //---list of each board point for a 140x140 block---
+    public List<Point> points = new ArrayList<>();
+    private CanvasWindow canvas;
+    private Block[] blocksOnScreen = new Block[16];
+    //will represent the "final" key presses before game lose
+    private boolean finalup = false;
+    private boolean finaldown = false;
+    private boolean finalleft = false;
+    private boolean finalright = false;
+    public Game() {
+    //setting up points to add to list
+    Point offScreen = new Point(-300, -300);
+    Point zerozero = new Point(55, 55);
+    Point zeroone = new Point(205, 55);
+    Point zerotwo = new Point(355, 55);
+    Point zerothree = new Point(505, 55);
+    Point onezero = new Point(55, 205);
+    Point oneone = new Point(205, 205);
+    Point onetwo = new Point(355, 205);
+    Point onethree = new Point(505, 205);
+    Point twozero = new Point(55, 355);
+    Point twoone = new Point(205, 355);
+    Point twotwo = new Point(355, 355);
+    Point twothree = new Point(505, 355);
+    Point threezero = new Point(55, 505);
+    Point threeone = new Point(205, 505);
+    Point threetwo = new Point(355, 505);
+    Point threethree = new Point(505, 505);
+    points.add(zerozero);
+    points.add(zeroone);
+    points.add(zerotwo);
+    points.add(zerothree);
+    points.add(onezero);
+    points.add(oneone);
+    points.add(onetwo);
+    points.add(onethree);
+    points.add(twozero);
+    points.add(twoone);
+    points.add(twotwo);
+    points.add(twothree);
+    points.add(threezero);
+    points.add(threeone);
+    points.add(threetwo);
+    points.add(threethree);
+    points.add(offScreen);
+    //setting up canvas and adding elements from GameBoard
+    this.canvas = new CanvasWindow("2048 (MSCS Department Edition)", 950,700);
+    GameBoard board = new GameBoard();
+    canvas.add(board.createGrid());
+    canvas.add(board.createKeyBoard());
+    canvas.add(board.border());
+//-------
+    //Called during gameplay
+        addRandomBlock();
+        addRandomBlock();
+        //call to move block from keydown (when list ready, iterate over each for moveblock)
+        canvas.onKeyDown(event ->
+            moveBlock(event.getKey())
+        );
+//------
+    }
+    public static int gridCoordsToIndex(int x, int y) {
+        return x + 4 * y;
+    }
+    public static int indexToXCoord(int index) {
+        return index % 4;
+    }
+    public static int indextoYCoord(int index) {
+        return index/4;
+    }
+    /**
+     * Adds an image of either Abby or Alicia onto a random position on the game board as long as there is open space
+     */
+    public void addRandomBlock() {
+        int randIndex = new Random().nextInt(points.size()-1);
+        int valTwoOrFour;
+        int count = 0;
+        for(int i = 0; i < 16; i++) {
+            if (blocksOnScreen[i] != null) {
+                count++;
+                if (count == 16) {
+                    return;
+                }
+            }
+        }     
+        while (blocksOnScreen[randIndex] != null){
+            randIndex = new Random().nextInt(points.size()-1);
+        }
+        double randval = new Random().nextDouble();
+        if (randval <= 0.7) {
+            valTwoOrFour = 2;
+        }
+        else {
+            valTwoOrFour = 4;
+        }
+        Block block = new Block(randIndex, valTwoOrFour, this);
+        canvas.add(block.getImage());
+        blocksOnScreen[randIndex] = block;
+    }
+        //for testing/demonstrating the win logic, adds 1024 block randomly
+    public void addHighBlock() {
+        int randIndex = new Random().nextInt(points.size()-1);
+        while (blocksOnScreen[randIndex] != null){
+            randIndex = new Random().nextInt(points.size()-1);
+        }
+        Block block = new Block(randIndex, 1024, this);
+        canvas.add(block.getImage());
+        blocksOnScreen[randIndex] = block;
+    }
+    /**
+     * Comprises all four of the move methods into one and calls each one 
+     * based off the key that is pressed by the user
+     * @param key       Corresponds with the key that is pressed
+     */
+    public void moveBlock(Key key) {
+        //key for test method
+        Key test = Key.T;
+        //movement keys
+        Key up = Key.UP_ARROW;
+        Key down = Key.DOWN_ARROW;
+        Key left = Key.LEFT_ARROW;
+        Key right = Key.RIGHT_ARROW;
+        //key for window close
+        Key close = Key.ESCAPE;
+        if (key == close){
+            canvas.closeWindow();
+        }
+        boolean validKey = false;
+        boolean hasWon = false;
+        //saving current screen for comparison after movement
+        List<Block> currentBlocks = new ArrayList<>();
+        List<Block> currentBlocks1 = new ArrayList<>();
+        for (Block block: blocksOnScreen){
+            currentBlocks.add(block);
+        }
+        if(key == up || key == down || key == left || key == right){
+            validKey = true;
+        }
+        if(key == up) {
+            for(int y = 0; y < 4;y++ ) {
+                for(int x = 0;x < 4;x++){
+                    Block block = blocksOnScreen[gridCoordsToIndex(x, y)];
+                    if (block != null) {
+                        moveUp(block);
+                    }
+                }
+            }
+        }
+        if (key == down) {
+            for(int y = 3;y > -1;y--) {
+                for(int x = 0; x < 4;x++) {
+                    Block block = blocksOnScreen[gridCoordsToIndex(x, y)];
+                    if (block != null) {
+                        moveDown(block);
+                    }
+                }
+            }
+        }
+        if (key == left) {
+            for(int x = 0;x < 4;x++) {
+                for(int y = 0; y < 4;y++) {
+                    Block block = blocksOnScreen[gridCoordsToIndex(x, y)];
+                    if (block != null) {
+                        moveLeft(block);
+                    }
+                }
+            }
+        }
+        if (key == right) {
+            for(int x = 3;x > -1;x--) {
+                for(int y = 0; y < 4;y++) {
+                    Block block = blocksOnScreen[gridCoordsToIndex(x, y)];
+                    if (block != null) {
+                        moveRight(block);
+                    }
+                }
+            }
+        }
+        if (key == test){
+            addHighBlock();
+        }
+        if (validKey == true){
+            canvas.removeAll();
+            GameBoard board = new GameBoard();
+            canvas.add(board.createGrid());
+            canvas.add(board.createKeyBoard());
+            canvas.add(board.border());
+            for(Block block:blocksOnScreen) {
+                if (block != null) {
+                    canvas.add(block.getImage());
+                }
+            }
+            addRandomBlock();
+        }
+        canvas.draw();
+
+        //Checks for win/loss after each move, if all 4 directions don't move anything, game over.
+        //If 2048 is on board, victory.
+        for (Block block: blocksOnScreen){
+            currentBlocks1.add(block);
+        }
+        int samenessCount = 0;
+        for (Block block : currentBlocks){
+            for (Block otherblock : currentBlocks1){
+                if (block == otherblock){
+                    samenessCount++;
+                }
+            }
+        }
+        if (samenessCount == 16){
+            if (key == up){
+                finalup = true;
+            }
+            if (key == down){
+                finaldown = true;
+            }
+            if (key == left){
+                finalleft = true;
+            }
+            if (key == down){
+                finalright = true;
+            }
+        }   
+        else{
+            finalup = false;
+            finaldown = false;
+            finalleft = false;
+            finalright = false;
+        }
+        for (Block block : blocksOnScreen){
+            if (block != null){
+                if (block.getVal() == 2048){
+                    hasWon = true;
+                    winGame();
+                }
+            }
+        }
+        if (hasWon != true && finalup == true && finaldown == true && finalleft == true && finalright == true){
+            loseGame();
+        }
+    }
+
+    /**
+     * If up-arrow key is pressed, then this method gets called on all blocks
+     * to move up
+     * @param block
+     */
+    public void moveUp(Block block) {
+        if (blocksOnScreen[block.getIndex()].getIndex() < 4) {
+            return;
+        }
+        int currPosition = block.getIndex();
+        int newPosition = block.getIndex() - 4;
+        //iterates until something happens
+        for (int i=0;i<4; i++){
+            //check if at end
+            if (blocksOnScreen[block.getIndex()].getIndex() < 4) {
+                return;
+            }
+            //check if block next
+            if (blocksOnScreen[newPosition] != null) {
+                break;
+            }
+            if (blocksOnScreen[newPosition] == null) {
+                block.setIndex(newPosition);
+                blocksOnScreen[newPosition] = block;
+                blocksOnScreen[currPosition] = null;
+                currPosition = block.getIndex();
+                newPosition = block.getIndex() - 4;
+            }
+        }
+        interactWith(block, blocksOnScreen[newPosition]);
+    }
+    /**
+     * If down-arrow key is pressed, then this method gets called on all blocks
+     * to move down
+     * @param block
+     */
+    public void moveDown(Block block) {
+        if (blocksOnScreen[block.getIndex()].getIndex() > 11) {
+            return;
+        }
+        int currPosition = block.getIndex();
+        int newPosition = block.getIndex() + 4;
+        //iterates until something happens
+        for (int i=0;i<4; i++){
+            //check if at end
+            if (blocksOnScreen[block.getIndex()].getIndex() > 11) {
+                return;
+            }
+            //check if block next
+            if (blocksOnScreen[newPosition] != null) {
+                break;
+            }
+            if (blocksOnScreen[newPosition] == null) {
+                block.setIndex(newPosition);
+                blocksOnScreen[newPosition] = block;
+                blocksOnScreen[currPosition] = null;
+                currPosition = block.getIndex();
+                newPosition = block.getIndex() + 4;
+            }
+        }
+        interactWith(block, blocksOnScreen[newPosition]);
+    }
+    /**
+     * If left-arrow key is pressed, then this method gets called on all blocks
+     * to move left
+     * @param block
+     */
+    public void moveLeft(Block block) {
+        if (indexToXCoord(block.getIndex()) == 0) {
+            return;
+        }
+        int currPosition = block.getIndex();
+        int newPosition = block.getIndex() - 1;
+        //iterates until something happens
+        for (int i=0;i<4; i++){
+            //check if at end
+            if (indexToXCoord(block.getIndex()) == 0) {
+                return;
+            }
+            //check if block next
+            if (blocksOnScreen[newPosition] != null) {
+                break;
+            }
+            if (blocksOnScreen[newPosition] == null) {
+                block.setIndex(newPosition);
+                blocksOnScreen[newPosition] = block;
+                blocksOnScreen[currPosition] = null;
+                currPosition = block.getIndex();
+                newPosition = block.getIndex() - 1;
+            }
+        }
+        interactWith(block, blocksOnScreen[newPosition]);
+    }
+    /**
+     * If right-arrow key is pressed, then this method gets called on all blocks
+     * to move right
+     * @param block
+     */
+    public void moveRight(Block block) {
+        if (indexToXCoord(block.getIndex()) == 3) {
+            return;
+        }
+        int currPosition = block.getIndex();
+        int newPosition = block.getIndex() + 1;
+        //iterates until something happens
+        for (int i=0;i<4; i++){
+            //check if at end
+            if (indexToXCoord(block.getIndex()) == 3) {
+                return;
+            }
+            //check if block next
+            if (blocksOnScreen[newPosition] != null) {
+                break;
+            }
+            if (blocksOnScreen[newPosition] == null) {
+                block.setIndex(newPosition);
+                blocksOnScreen[newPosition] = block;
+                blocksOnScreen[currPosition] = null;
+                currPosition = block.getIndex();
+                newPosition = block.getIndex() + 1;
+            }
+        }
+        interactWith(block, blocksOnScreen[newPosition]);
+    }
+    /**
+     * Gets called in the four directional move methods to combine the blocks
+     * that meet the criteria to do so
+     * @param block          The block that is used to determine if the other block is the same or different
+     * @param otherBlock       The block that is used to reference the main block and compare it to that block
+     */
+    public void interactWith(Block block, Block otherBlock) {
+        if(block.getVal() == otherBlock.getVal()) {
+            //does not merge past 2048
+            if (otherBlock.getVal()*2 > 2048){
+                return;
+            }
+            Block newBlock = new Block(otherBlock.getIndex(), (otherBlock.getVal()*2), this);
+            blocksOnScreen[otherBlock.getIndex()] = newBlock;
+            blocksOnScreen[block.getIndex()] = null;
+            canvas.remove(block.getImage());
+            canvas.remove(otherBlock.getImage());
+            canvas.add(newBlock.getImage());
+            block.removeBlock(otherBlock);
+            block.removeBlock(block);
+            canvas.draw();
+        }
+        else {
+            return;
+        }
+
+    }
+    //adds win text/graphic to canvas, signifying a win
+    public void winGame(){
+        GameBoard winboard = new GameBoard();
+        canvas.add(winboard.winGroup());
+
+    }
+    //adds lose text to canvas, signifying a loss
+    public void loseGame() {
+        GameBoard loseboard = new GameBoard();
+        canvas.add(loseboard.loseGroup());
+    }
+    public static void main(String args[]) {
+        new Game();
+    }
+}
